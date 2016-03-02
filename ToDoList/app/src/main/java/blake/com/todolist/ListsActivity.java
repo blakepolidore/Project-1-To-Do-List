@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class ListsActivity extends AppCompatActivity {
     LinkedList<String> itemsLinkedList = new LinkedList<>();
     ListView listViewItems;
     TextView titleOfToDoList;
-    Button backToMainButton;
+    ImageButton backToMainButton;
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
@@ -57,7 +58,7 @@ public class ListsActivity extends AppCompatActivity {
     private void instantiateMethods() {
         itemEntryET = (EditText) findViewById(R.id.listItems_edittext);
         titleOfToDoList = (TextView) findViewById(R.id.listTitle);
-        backToMainButton = (Button) findViewById(R.id.backToAllLists_button);
+        backToMainButton = (ImageButton) findViewById(R.id.backToAllLists_button);
         addItemFAB = (FloatingActionButton) findViewById(R.id.fabListItems);
         listViewItems = (ListView) findViewById(R.id.items_listView);
         instructionsButton = (Button) findViewById(R.id.instructionsItem);

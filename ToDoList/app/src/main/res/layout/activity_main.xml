@@ -30,26 +30,25 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listNames_listView"
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="15dp">
-
-    </ListView>
-
+        android:layout_height="wrap_content"
+        android:id="@+id/listName_edittext"
+        android:hint="Add Lists"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"/>
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <EditText
+        <ListView
+            android:id="@+id/listNames_listView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listName_edittext"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:hint="Add Lists"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp">
+
+        </ListView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabLists"
@@ -60,9 +59,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_input_add"
+            />
 
     </RelativeLayout>
-
-
 </LinearLayout>

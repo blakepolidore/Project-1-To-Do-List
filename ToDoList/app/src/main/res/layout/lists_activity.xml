@@ -26,35 +26,36 @@
             android:textSize="30sp"
             android:layout_marginTop="10dp"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/backToAllLists_button"
             android:text="Go Back"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:src="@drawable/back"/>
     </RelativeLayout>
 
-    <ListView
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/items_listView">
-
-    </ListView>
+        android:layout_height="wrap_content"
+        android:id="@+id/listItems_edittext"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Add items"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <EditText
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listItems_edittext"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:hint="Add items"
-            />
+            android:layout_height="match_parent"
+            android:id="@+id/items_listView">
+
+        </ListView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabListItems"
@@ -65,10 +66,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_input_add"
+            />
 
     </RelativeLayout>
-
-
 
 </LinearLayout>
