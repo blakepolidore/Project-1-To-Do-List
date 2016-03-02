@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +33,11 @@ public class ListsActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
+    int[] backgroundColors = {
+            Color.WHITE,
+            Color.GREEN
+    };
+    int backgroundColor = backgroundColors[0];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +128,23 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void changeColor(View view) {
-        view.setBackgroundColor(Color.GREEN);
+        cycleColors();
+        view.setBackgroundColor(backgroundColor);
+    }
+
+    private void cycleColors() {
+        switch (backgroundColor) {
+            case Color.WHITE:
+                backgroundColor = backgroundColors[1];
+                break;
+            case Color.GREEN:
+                backgroundColor = backgroundColors[0];
+                break;
+
+            default:
+                backgroundColor = backgroundColors[0];
+                break;
+        }
     }
 
     private void setInstructionsButton() {
@@ -135,15 +157,29 @@ public class ListsActivity extends AppCompatActivity {
         });
     }
 
-    private void setUndoSnackBar(final View view) {
+    private void setUndoSnackBar(View view) {
         undoSnackBar = Snackbar.make(view, "List is deleted", Snackbar.LENGTH_LONG)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        Toast.makeText(ListsActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onShown(Snackbar snackbar) {
+                        super.onShown(snackbar);
+                    }
+                })
                 .setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Snackbar snackbar1 = Snackbar.make(view, "List is restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = Snackbar.make(v, "List is restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
+
                 });
+
         undoSnackBar.show();
     }
 }

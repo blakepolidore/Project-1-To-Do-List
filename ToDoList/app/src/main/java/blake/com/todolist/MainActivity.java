@@ -2,6 +2,7 @@ package blake.com.todolist;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewMain;
     Intent intent;
     Button instructionsButton;
-
+    Snackbar undoSnackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 String listToBeRemoved = nameOfListsArrayAdapter.getItem(position);
                 nameOfListsArrayAdapter.remove(listToBeRemoved);
+                setUndoSnackBar(view);
                 nameOfListsArrayAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -104,5 +106,31 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void setUndoSnackBar(View view) {
+        undoSnackBar = Snackbar.make(view, "List is deleted", Snackbar.LENGTH_LONG)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        Toast.makeText(MainActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onShown(Snackbar snackbar) {
+                        super.onShown(snackbar);
+                    }
+                })
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar snackbar1 = Snackbar.make(v, "List is restored!", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+
+                });
+
+        undoSnackBar.show();
     }
 }
