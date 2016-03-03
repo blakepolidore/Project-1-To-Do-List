@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
-                        Toast.makeText(MainActivity.this, "Toast", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

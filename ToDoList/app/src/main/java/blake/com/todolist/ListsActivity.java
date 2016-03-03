@@ -1,17 +1,14 @@
 package blake.com.todolist;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,31 +16,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by Raiders on 3/1/16.
  */
 public class ListsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ListsActivity: ";
+
     EditText itemEntryET;
     FloatingActionButton addItemFAB;
-    ArrayAdapter<String> itemsArrayAdapter;
-    LinkedList<String> itemsLinkedList = new LinkedList<>();
-    ListView listViewItems;
+    ListItemAdapter itemsArrayAdapter;
+    ArrayList<ListItem> itemsList = new ArrayList<>();
+    ListView listView;
     TextView titleOfToDoList;
     ImageButton backToMainButton;
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
-    static boolean strikeThrough = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lists_activity);
 
-        instantiateMethods();
+        instantiateViewElements();
         changeTitleText();
         setOnClickListenerFAB();
         setOnItemListLongClick();
@@ -53,29 +51,29 @@ public class ListsActivity extends AppCompatActivity {
         setInstructionsButton();
     }
 
-    private void instantiateMethods() {
+    private void instantiateViewElements() {
         itemEntryET = (EditText) findViewById(R.id.listItems_edittext);
         titleOfToDoList = (TextView) findViewById(R.id.listTitle);
         backToMainButton = (ImageButton) findViewById(R.id.backToAllLists_button);
         addItemFAB = (FloatingActionButton) findViewById(R.id.fabListItems);
-        listViewItems = (ListView) findViewById(R.id.items_listView);
+        listView = (ListView) findViewById(R.id.items_listView);
         instructionsButton = (Button) findViewById(R.id.instructionsItem);
     }
 
     private void fillListItems() {
-        String listItems = itemEntryET.getText().toString();
-        if (listItems.isEmpty()) {
+        String listItemString = itemEntryET.getText().toString();
+        if (listItemString.isEmpty()) {
             Toast.makeText(ListsActivity.this, "Please enter item", Toast.LENGTH_SHORT).show();
         }
         else {
-            itemsLinkedList.add(listItems);
+            ListItem listItem = new ListItem(listItemString, false);
+            itemsList.add(listItem);
         }
     }
 
     private void setItemsArrayAdapter() {
-        itemsArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, itemsLinkedList);
-        listViewItems.setAdapter(itemsArrayAdapter);
+        itemsArrayAdapter = new ListItemAdapter(this, itemsList);
+        listView.setAdapter(itemsArrayAdapter);
     }
 
     private void setOnClickListenerFAB() {
@@ -90,10 +88,10 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void setOnItemListLongClick() {
-        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
-                String itemToBeRemoved = itemsArrayAdapter.getItem(position);
+                ListItem itemToBeRemoved = itemsArrayAdapter.getItem(position);
                 itemsArrayAdapter.remove(itemToBeRemoved);
                 setUndoSnackBar(view);
                 itemsArrayAdapter.notifyDataSetChanged();
@@ -118,17 +116,18 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void completedTask() {
-        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView strikeThroughView = (TextView) view;
-                if (!strikeThrough) {
-                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    strikeThrough = true;
-                }
-                else {
+                TextView strikeThroughView = (TextView) view.findViewById(R.id.item_text);
+                Log.d(TAG, "Clicked item at pos: " + position);
+                ListItem listItem = itemsList.get(position);
+                if (listItem.isStuckThrough()){
                     strikeThroughView.setPaintFlags(0);
-                    strikeThrough=false;
+                    listItem.setIsStuckThrough(false);
+                } else {
+                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    listItem.setIsStuckThrough(true);
                 }
             }
         });
@@ -145,12 +144,11 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void setUndoSnackBar(View view) {
-        undoSnackBar = Snackbar.make(view, "List is deleted", Snackbar.LENGTH_LONG)
+        undoSnackBar = Snackbar.make(view, "Item is deleted", Snackbar.LENGTH_LONG)
                 .setCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
-                        Toast.makeText(ListsActivity.this, "Toast", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -161,7 +159,7 @@ public class ListsActivity extends AppCompatActivity {
                 .setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Snackbar snackbar1 = Snackbar.make(v, "List is restored!", Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = Snackbar.make(v, "Item is restored!", Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                     }
 
