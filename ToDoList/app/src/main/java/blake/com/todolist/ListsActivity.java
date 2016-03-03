@@ -2,10 +2,12 @@ package blake.com.todolist;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,11 +36,7 @@ public class ListsActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
-    int[] backgroundColors = {
-            Color.WHITE,
-            Color.GREEN
-    };
-    int backgroundColor = backgroundColors[0];
+    static boolean strikeThrough = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,29 +121,17 @@ public class ListsActivity extends AppCompatActivity {
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                changeColor(view);
+                TextView strikeThroughView = (TextView) view;
+                if (!strikeThrough) {
+                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    strikeThrough = true;
+                }
+                else {
+                    strikeThroughView.setPaintFlags(0);
+                    strikeThrough=false;
+                }
             }
         });
-    }
-
-    private void changeColor(View view) {
-        cycleColors();
-        view.setBackgroundColor(backgroundColor);
-    }
-
-    private void cycleColors() {
-        switch (backgroundColor) {
-            case Color.WHITE:
-                backgroundColor = backgroundColors[1];
-                break;
-            case Color.GREEN:
-                backgroundColor = backgroundColors[0];
-                break;
-
-            default:
-                backgroundColor = backgroundColors[0];
-                break;
-        }
     }
 
     private void setInstructionsButton() {
