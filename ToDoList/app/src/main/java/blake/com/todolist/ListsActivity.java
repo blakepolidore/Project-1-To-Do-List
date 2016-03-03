@@ -88,6 +88,7 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void setOnItemListLongClick() {
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
@@ -98,6 +99,7 @@ public class ListsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
     private void changeTitleText() {
@@ -116,6 +118,7 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private void completedTask() {
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -131,6 +134,7 @@ public class ListsActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void setInstructionsButton() {

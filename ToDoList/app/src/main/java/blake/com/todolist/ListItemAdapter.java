@@ -19,16 +19,17 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        ListItem listItem = getItem(position);
+    public View getView(final int position, View convertView, ViewGroup parent){
+        final ListItem listItem = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_row, parent, false);
         }
 
-        TextView itemTextTextView = (TextView) convertView.findViewById(R.id.item_text);
+        final TextView itemTextTextView = (TextView) convertView.findViewById(R.id.item_text);
 
         itemTextTextView.setText(listItem.getItemText());
+
 
         return convertView;
     }
