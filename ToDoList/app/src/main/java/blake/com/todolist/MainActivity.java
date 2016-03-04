@@ -54,20 +54,20 @@ public class MainActivity extends AppCompatActivity {
         instructionsButton = (Button) findViewById(R.id.instructionsMain);
     }
 
-    private void fillListofLists() {
+    private void fillArrayList() {
         String listName = listNameEntryET.getText().toString();
         if (listName.isEmpty()) {
             Toast.makeText(MainActivity.this, "Please enter list name", Toast.LENGTH_SHORT).show();
         } else {
-            listArrayList.add(listName);
-            ArrayList<String> emptyArrayList = new ArrayList<>();
-            masterList.add(emptyArrayList);
+            listArrayList.add(listName); //Filling list with list names
+            ArrayList<String> emptyArrayList = new ArrayList<>(); //Creating empty array to send to other activity
+            masterList.add(emptyArrayList); //Adding empty list to master list
         }
     }
 
     private void setNameOfListsArrayAdapter() {
         nameOfListsArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, listArrayList);
+                (this, android.R.layout.simple_list_item_1, listArrayList); //Setting adapter to the populated list
         listViewMain.setAdapter(nameOfListsArrayAdapter);
     }
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         addListFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillListofLists();
+                fillArrayList();
                 nameOfListsArrayAdapter.notifyDataSetChanged();
                 listNameEntryET.getText().clear();
             }
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 String listToBeRemoved = nameOfListsArrayAdapter.getItem(position);
                 nameOfListsArrayAdapter.remove(listToBeRemoved);
                 setUndoSnackBar(view);
+                masterList.remove(position); //Remove the items that were created with list
                 nameOfListsArrayAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -101,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String listTitle = (String) parent.getAdapter().getItem((position));
-                intent.putExtra("Title", listTitle);
-                intent.putExtra(DATA_INDEX_KEY, position);
-                intent.putExtra(DATA_KEY, masterList.get(position));
+                intent.putExtra("Title", listTitle); //Title to top of next activity
+                intent.putExtra(DATA_INDEX_KEY, position); //Send empty list across
+                intent.putExtra(DATA_KEY, masterList.get(position)); //Send index across
                 startActivityForResult(intent, MAIN_REQUEST_CODE);
             }
         });
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setUndoSnackBar(View view) {
+    private void setUndoSnackBar(View view) { //Doesn't actually undo
         undoSnackBar = Snackbar.make(view, "List is deleted", Snackbar.LENGTH_LONG)
                 .setCallback(new Snackbar.Callback() {
                     @Override
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == MAIN_REQUEST_CODE){
             if (resultCode == RESULT_OK){
                 if (data != null) {
-                    myTempList = data.getStringArrayListExtra(DATA_KEY);
+                    myTempList = data.getStringArrayListExtra(DATA_KEY); //Filling a new temporary Array List to be editable
                     int index = data.getIntExtra(DATA_INDEX_KEY, ERROR_INDEX);
                     if (index != ERROR_INDEX){
                         masterList.set(index, myTempList);

@@ -1,5 +1,32 @@
 # Project-1-To-Do-List
 
-On the main activity you can add the name of your list in the edit text. When the floating action button is pressed this list name will appear in the list. If the FAB is clicked with no text in the edit text, a toast will apear to prompt the user to add text. If the info button is clicked, instructions will appear in the form of a toast, on how to use the app. If the list item containing the name is long pressed, the list will be deleted. A snack bar prompt will pop up asking the user if they would like to undo their action. Unfortunately this function does not work yet and a deleted item will not reappear. If the list item containing a list name is clicked, the list items activity will be brought up. 
-In the list items activity, the title block will be changed to the name of the list the user created in the prior activity. Items can be added to the list by writing them into the edit text and clicking the FAB. If the FAB is clicked with no text in the edit text, a toast will apear to prompt the user to add text. If the info button is clicked, instructions will appear in the form of a toast, on how to use the app. If the list item is long pressed, the iten will be deleted. A snack bar prompt will pop up asking the user if they would like to undo their action. Unfortunately this function does not work yet and a deleted item will not reappear.  
-One bug is that when the screen rotates it starts a new activity and I lose the data. Another is the android default back button needs to be clicked twice in order to be used.
+To do list is a simple to do list that allows you to make multiple lists with various to do items and delete them when you're done.
+
+Features
+
+-Add multiple to do lists
+
+-Add multiple items to each list
+
+-Delete items or lists
+
+Bugs
+
+-When the screen rotates the items dissapear
+
+-The undo feature was not installed
+
+-The strike through when done feature was not installed
+
+-Items will not be saved after turning off the app
+
+
+Support
+
+Email me at blakepolidore@gmail.com for comments or questions.
+
+For source code:
+
+https://github.com/blakepolidore/Project-1-To-Do-List
+
+

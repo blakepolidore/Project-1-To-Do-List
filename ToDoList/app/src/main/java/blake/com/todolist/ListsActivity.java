@@ -47,7 +47,6 @@ public class ListsActivity extends AppCompatActivity {
         itemsList = getData();
         index = getDataIndex();
         setItemsArrayAdapter();
-        completedTask();
         setInstructionsButton();
 
     }
@@ -117,25 +116,6 @@ public class ListsActivity extends AppCompatActivity {
         });
     }
 
-    private void completedTask() {
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView strikeThroughView = (TextView) view.findViewById(R.id.item_text);
-//                Log.d(TAG, "Clicked item at pos: " + position);
-//                ListItem listItem = itemsList.get(position);
-//                if (listItem.isStuckThrough()) {
-//                    strikeThroughView.setPaintFlags(0);
-//                    listItem.setIsStuckThrough(false);
-//                } else {
-//                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//                    listItem.setIsStuckThrough(true);
-//                }
-//            }
-//        });
-
-    }
 
     private void setInstructionsButton() {
         instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +127,7 @@ public class ListsActivity extends AppCompatActivity {
         });
     }
 
-    private void setUndoSnackBar(View view) {
+    private void setUndoSnackBar(View view) { //Doesn't actually work for undoing an action
         undoSnackBar = Snackbar.make(view, "Item is deleted", Snackbar.LENGTH_LONG)
                 .setCallback(new Snackbar.Callback() {
                     @Override
@@ -203,7 +183,6 @@ public class ListsActivity extends AppCompatActivity {
     public void onBackPressed() {
         sendListBack();
     }
-
 
 }
 
