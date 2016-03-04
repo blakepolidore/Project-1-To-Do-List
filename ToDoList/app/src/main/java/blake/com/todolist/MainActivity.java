@@ -26,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
-    private ArrayList<String> myDataList = new ArrayList<>();
+    private ArrayList<String> myTempList = new ArrayList<>();
     private static final int MAIN_REQUEST_CODE = 27;
     public static final String DATA_KEY = "myDataKey";
     ArrayList<ArrayList<String>> masterList = new ArrayList<>();
+    public static final String DATA_INDEX_KEY = "myDataIndexKey";
+    public static final int ERROR_INDEX = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String listTitle = (String) parent.getAdapter().getItem((position));
                 intent.putExtra("Title", listTitle);
-                intent.putExtra(DATA_KEY, listArrayList);
+                intent.putExtra(DATA_INDEX_KEY, position);
+                intent.putExtra(DATA_KEY, masterList.get(position));
                 startActivityForResult(intent, MAIN_REQUEST_CODE);
             }
         });
@@ -146,7 +149,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == MAIN_REQUEST_CODE){
             if (resultCode == RESULT_OK){
                 if (data != null) {
-                    myDataList = data.getStringArrayListExtra(DATA_KEY);
+                    myTempList = data.getStringArrayListExtra(DATA_KEY);
+                    int index = data.getIntExtra(DATA_INDEX_KEY, ERROR_INDEX);
+                    if (index != ERROR_INDEX){
+                        masterList.set(index, myTempList);
+                    }
                 }
             } else  if (requestCode == RESULT_CANCELED){
                 Log.w("Main", "Failed to get new list back");

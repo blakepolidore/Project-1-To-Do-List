@@ -3,6 +3,8 @@ package blake.com.todolist;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +37,7 @@ public class ListsActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
-    ArrayList<String> tempList;
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class ListsActivity extends AppCompatActivity {
         setItemsArrayAdapter();
         completedTask();
         setInstructionsButton();
-        tempList = getData();
+        itemsList = getData();
+        index = getDataIndex();
     }
 
     private void instantiateViewElements() {
@@ -182,12 +185,21 @@ public class ListsActivity extends AppCompatActivity {
         return listIntent.getStringArrayListExtra(MainActivity.DATA_KEY);
     }
 
+    private int getDataIndex(){
+        Intent intent2 = getIntent();
+        if (intent2 == null){
+            return MainActivity.ERROR_INDEX;
+        }
+        return intent2.getIntExtra(MainActivity.DATA_INDEX_KEY, MainActivity.ERROR_INDEX);
+    }
+
     private void sendListBack(){
         Intent intent1 = getIntent();
         if (intent1 == null){
             return;
         }
-        intent1.putExtra(MainActivity.DATA_KEY, tempList);
+        intent1.putExtra(MainActivity.DATA_KEY, itemsList);
+        intent1.putExtra(MainActivity.DATA_INDEX_KEY, index);
         setResult(RESULT_OK, intent1);
         finish();
     }
@@ -197,7 +209,7 @@ public class ListsActivity extends AppCompatActivity {
     public void onBackPressed() {
         sendListBack();
     }
-
+    
 }
 
 
