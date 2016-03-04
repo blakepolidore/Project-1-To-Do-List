@@ -14,7 +14,8 @@
             android:id="@+id/instructionsItem"
             android:text="Info"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
-            android:src="@drawable/back"/>
+            android:src="@android:drawable/ic_menu_revert"
+            />
     </RelativeLayout>
 
     <EditText

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
+    private ArrayList<String> myDataList;
+    private static final int MAIN_REQUEST_CODE = 27;
+    public static final String DATA_KEY = "myDataKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
