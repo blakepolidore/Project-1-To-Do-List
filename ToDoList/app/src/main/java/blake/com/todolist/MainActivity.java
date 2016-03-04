@@ -26,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
-    private ArrayList<String> myDataList;
+    private ArrayList<String> myDataList = new ArrayList<>();
     private static final int MAIN_REQUEST_CODE = 27;
     public static final String DATA_KEY = "myDataKey";
+    ArrayList<ArrayList<String>> masterList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Please enter list name", Toast.LENGTH_SHORT).show();
         } else {
             listArrayList.add(listName);
+            masterList.add(listArrayList);
         }
     }
 
