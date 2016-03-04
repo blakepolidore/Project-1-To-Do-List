@@ -35,6 +35,7 @@ public class ListsActivity extends AppCompatActivity {
     Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
+    ArrayList<String> tempList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class ListsActivity extends AppCompatActivity {
         setItemsArrayAdapter();
         completedTask();
         setInstructionsButton();
+        tempList = getData();
     }
 
     private void instantiateViewElements() {
@@ -108,11 +110,11 @@ public class ListsActivity extends AppCompatActivity {
     }
 
     private  void setBackToMainButton() {
-        intent = new Intent(this, MainActivity.class);
+
         backToMainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                sendListBack();
             }
         });
     }
@@ -125,7 +127,7 @@ public class ListsActivity extends AppCompatActivity {
                 TextView strikeThroughView = (TextView) view.findViewById(R.id.item_text);
                 Log.d(TAG, "Clicked item at pos: " + position);
                 ListItem listItem = itemsList.get(position);
-                if (listItem.isStuckThrough()){
+                if (listItem.isStuckThrough()) {
                     strikeThroughView.setPaintFlags(0);
                     listItem.setIsStuckThrough(false);
                 } else {
@@ -171,6 +173,31 @@ public class ListsActivity extends AppCompatActivity {
 
         undoSnackBar.show();
     }
+
+    private ArrayList<String> getData(){
+        Intent listIntent = getIntent();
+        if (listIntent == null){
+            return null;
+        }
+        return listIntent.getStringArrayListExtra(MainActivity.DATA_KEY);
+    }
+
+    private void sendListBack(){
+        Intent intent1 = getIntent();
+        if (intent1 == null){
+            return;
+        }
+        intent1.putExtra(MainActivity.DATA_KEY, tempList);
+        setResult(RESULT_OK, intent1);
+        finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        sendListBack();
+    }
+
 }
 
 

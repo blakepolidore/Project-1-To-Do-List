@@ -1,10 +1,11 @@
 package blake.com.todolist;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,14 +15,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText listNameEntryET;
     FloatingActionButton addListFAB;
     ArrayAdapter<String> nameOfListsArrayAdapter;
-    LinkedList<String> nameOfListLinkedList = new LinkedList<>();
+    ArrayList<String> listArrayList = new ArrayList<>();
     ListView listViewMain;
     Intent intent;
     Button instructionsButton;
@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         if (listName.isEmpty()) {
             Toast.makeText(MainActivity.this, "Please enter list name", Toast.LENGTH_SHORT).show();
         } else {
-            nameOfListLinkedList.add(listName);
+            listArrayList.add(listName);
         }
     }
 
     private void setNameOfListsArrayAdapter() {
         nameOfListsArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, nameOfListLinkedList);
+                (this, android.R.layout.simple_list_item_1, listArrayList);
         listViewMain.setAdapter(nameOfListsArrayAdapter);
     }
 
@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String listTitle = (String) parent.getAdapter().getItem((position));
                 intent.putExtra("Title", listTitle);
-                startActivity(intent);
+                intent.putExtra(DATA_KEY, listArrayList);
+                startActivityForResult(intent, MAIN_REQUEST_CODE);
             }
         });
     }
@@ -135,5 +136,19 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         undoSnackBar.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == MAIN_REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+                if (data != null) {
+                    myDataList = data.getStringArrayListExtra(DATA_KEY);
+                }
+            } else  if (requestCode == RESULT_CANCELED){
+                Log.w("Main", "Failed to get new list back");
+            }
+        }
     }
 }
