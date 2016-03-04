@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Please enter list name", Toast.LENGTH_SHORT).show();
         } else {
             listArrayList.add(listName);
-            masterList.add(listArrayList);
+            ArrayList<String> emptyArrayList = new ArrayList<>();
+            masterList.add(emptyArrayList);
         }
     }
 

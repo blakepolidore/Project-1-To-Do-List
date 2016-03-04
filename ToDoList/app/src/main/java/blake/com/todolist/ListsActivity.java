@@ -1,16 +1,13 @@
 package blake.com.todolist;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,15 +23,13 @@ import java.util.ArrayList;
 public class ListsActivity extends AppCompatActivity {
 
     private static final String TAG = "ListsActivity: ";
-
     EditText itemEntryET;
     FloatingActionButton addItemFAB;
-    ListItemAdapter itemsArrayAdapter;
-    ArrayList<ListItem> itemsList = new ArrayList<>();
+    ArrayAdapter<String> itemsArrayAdapter;
+    ArrayList<String> itemsList = new ArrayList<>();
     ListView listView;
     TextView titleOfToDoList;
     ImageButton backToMainButton;
-    Intent intent;
     Button instructionsButton;
     Snackbar undoSnackBar;
     int index;
@@ -45,15 +40,16 @@ public class ListsActivity extends AppCompatActivity {
         setContentView(R.layout.lists_activity);
 
         instantiateViewElements();
-        changeTitleText();
         setOnClickListenerFAB();
+        changeTitleText();
         setOnItemListLongClick();
         setBackToMainButton();
+        itemsList = getData();
+        index = getDataIndex();
         setItemsArrayAdapter();
         completedTask();
         setInstructionsButton();
-        itemsList = getData();
-        index = getDataIndex();
+
     }
 
     private void instantiateViewElements() {
@@ -71,13 +67,12 @@ public class ListsActivity extends AppCompatActivity {
             Toast.makeText(ListsActivity.this, "Please enter item", Toast.LENGTH_SHORT).show();
         }
         else {
-            ListItem listItem = new ListItem(listItemString, false);
-            itemsList.add(listItem);
+            itemsList.add(listItemString);
         }
     }
 
     private void setItemsArrayAdapter() {
-        itemsArrayAdapter = new ListItemAdapter(this, itemsList);
+        itemsArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, itemsList);
         listView.setAdapter(itemsArrayAdapter);
     }
 
@@ -97,7 +92,7 @@ public class ListsActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
-                ListItem itemToBeRemoved = itemsArrayAdapter.getItem(position);
+                String itemToBeRemoved = itemsArrayAdapter.getItem(position);
                 itemsArrayAdapter.remove(itemToBeRemoved);
                 setUndoSnackBar(view);
                 itemsArrayAdapter.notifyDataSetChanged();
@@ -124,21 +119,21 @@ public class ListsActivity extends AppCompatActivity {
 
     private void completedTask() {
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView strikeThroughView = (TextView) view.findViewById(R.id.item_text);
-                Log.d(TAG, "Clicked item at pos: " + position);
-                ListItem listItem = itemsList.get(position);
-                if (listItem.isStuckThrough()) {
-                    strikeThroughView.setPaintFlags(0);
-                    listItem.setIsStuckThrough(false);
-                } else {
-                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    listItem.setIsStuckThrough(true);
-                }
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                TextView strikeThroughView = (TextView) view.findViewById(R.id.item_text);
+//                Log.d(TAG, "Clicked item at pos: " + position);
+//                ListItem listItem = itemsList.get(position);
+//                if (listItem.isStuckThrough()) {
+//                    strikeThroughView.setPaintFlags(0);
+//                    listItem.setIsStuckThrough(false);
+//                } else {
+//                    strikeThroughView.setPaintFlags(strikeThroughView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//                    listItem.setIsStuckThrough(true);
+//                }
+//            }
+//        });
 
     }
 
@@ -180,7 +175,7 @@ public class ListsActivity extends AppCompatActivity {
     private ArrayList<String> getData(){
         Intent listIntent = getIntent();
         if (listIntent == null){
-            return null;
+            return new ArrayList<>();
         }
         return listIntent.getStringArrayListExtra(MainActivity.DATA_KEY);
     }
@@ -204,12 +199,12 @@ public class ListsActivity extends AppCompatActivity {
         finish();
     }
 
-
     @Override
     public void onBackPressed() {
         sendListBack();
     }
-    
+
+
 }
 
 
